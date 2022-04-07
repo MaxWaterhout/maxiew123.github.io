@@ -40,10 +40,9 @@ To show the matching, a simple GUI was employed to show the matches in topologic
 In the figures below, a few examples of matches in a certain sequence can be seen.
 
 <p align="left">
-    <img src="https://user-images.githubusercontent.com/95222839/162180656-91e67a1e-6202-47e3-809c-dfaacfb68795.png" width="400" height="400">
+    <img src="https://user-images.githubusercontent.com/95222839/162180656-91e67a1e-6202-47e3-809c-dfaacfb68795.png" width="300" height="300">
     &nbsp; &nbsp; &nbsp; &nbsp;
-    <img src="https://user-images.githubusercontent.com/95222839/162181051-a0116b09-743f-4734-85f1-a1bc94bcc31a.png" width="400" height="400">
-
+    <img src="https://user-images.githubusercontent.com/95222839/162181051-a0116b09-743f-4734-85f1-a1bc94bcc31a.png" width="300" height="300">
     <br>
         <em>Fig. 2: Examples of matched sequences</em>
 </p>
