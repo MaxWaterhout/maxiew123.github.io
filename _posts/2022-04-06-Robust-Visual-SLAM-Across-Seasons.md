@@ -6,6 +6,33 @@ We will first describe the purpose of the reproduced paper. After that we descri
 ## 2. Motivation
 Place recognition is a core element in Simultaneous Localization and Mapping (SLAM). Drastic errors in trajectory estimation appear when there are incorrect loop closures. Detecting loop closures across seasons is a big challenge since often systems only perform well on minor perceptual changes in the environment. Therefore, the paper: “Robust Visual SLAM Across Seasons” [[1]](#1) had its main focus on computing consistent trajectories over longer periods of time and aimed at achieving robust place recognition across season.
 
+## 3. Implementation
+### 3.1 Robust image matching
+
+The goal for the image matching is to match two sequences of images. Whereas the first sequence of the dataset is refered to as 'database' which is a ordered set of images: D = ($$d_1$$, ..., $d_D$) and the latter is refered to as the query dataset which is the set: \mathcal{Q} = ($q_1$, ..., $q_Q$). The query set is recorded in a different season and is thereby different from the database image, for example there is snow on the roads or leafs have fallen of the tree. 
+For classification of images 'Deep Convolutional Neural Networks' (DCNN) have set the benchmark since AlexNet \cite{c3}. DCNNs can learns features from millions of training images. DCNNs consists of convolution layers in the early stages where it can present abstract feature presentations like edges or lines, see fig \ref{fig:feature representation}. For this comparing task the AlexNet model is used which is pre-trained on the ImageNet dataset. The authors of paper \cite{c2} have reported that the Conv3 layer of AlexNet behaves more robust to seasonal changes on their datasets so that is the layer that we also chose to use.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/conv3.png}
+    \caption{The abstract feature representations}
+    \label{fig:feature representation}
+\end{figure}
+
+For the image input we resize the images to 231x231 pixels to fit the input for the AlexnNet. Here we diverge from the original paper where they resize to 256x256 pixels and we follow \cite{c2}. This is because after going through the convolution layers we want an image descriptor with a dimension of 384x13x13, ultimately resized in a feature vector of size 64896.
+The comparison between the quary and database are done with the cosine similarity. The cosine similarity calculates how much the two images look like each other, with image descriptors respectively $I_D_i$ and $I_D_j$. The full cosine similarity matrix is calculated with equation \ref{eq:3}. In this matrix image descriptors are compared to each other. 
+\begin{equation}
+\label{eq:3}
+S_i,j = I_Q_i \cdot I_D_j
+\end{equation}
+
+With $S_{i,j}$ between [0,1] where $S_{i,j}$ = 1 is full similarity. 
+
+```math
+e^{i\pi} + 1 = 0
+```
+
+$a^2 + b^2 = c^2$.
 
 
 ## References
