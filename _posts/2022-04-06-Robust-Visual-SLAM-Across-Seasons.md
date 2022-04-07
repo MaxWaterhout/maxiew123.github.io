@@ -28,6 +28,26 @@ The comparison between the quary and database are done with the cosine similarit
 
 With <img src="https://render.githubusercontent.com/render/math?math=S_{i,j}"> between [0,1] where <img src="https://render.githubusercontent.com/render/math?math=S_{i,j} = 1 "> is full similarity. 
 
+### 3.2 Sequence matching
+For sequence matching, we implemented a minimum cost flow network, which has a structure representing the problem of matching images while taking into account the temporal nature of these images. Specifically, a single flow needs to be found from a source node to a sink node through a network of nodes that indicate either a match between a certain database-query image pair or a non-match between them. The nodes are connected with edges of a certain weight, dependent on a range of hyperparameters and the similarity matrix presented in the previous section. The higher the similarity between a database-query pair, the lower the cost of reaching the node representing a match. The accumulative cost of the weights of edges in a flow should be minimized, creating a sequence matching.
+
+Setting the hyperparameters for this problem is quite cumbersome and the reproduced paper does not specify any details as to its settings. Therefore we had to do some heuristic search to find suitable ones. Unfortunately these settings also seemed to be very dependent on the problem and a small tweak could make the difference between convergence and divergence. \
+A final remark with respect to the shortcomings of our implementation is the fact that the paper references a previous implementation for the minimum cost flow network but extends this implementation with an additional component which is not described in detail. Therefore, we needed to make some design choices with respect to set of edges aimed at reducing ambiguity in database images, referenced by epsilon h in the paper.\\
+
+To show the matching, a simple GUI was employed to show the matches in topological order. Such a match consists of the database image, query image and identifiers of both.
+
+## 4. Results
+In the figures below, a few examples of matches in a certain sequence can be seen.
+
+<p align="left">
+    <img src="https://user-images.githubusercontent.com/95222839/162180656-91e67a1e-6202-47e3-809c-dfaacfb68795.png" width="400" height="400">
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    <img src="https://user-images.githubusercontent.com/95222839/162181051-a0116b09-743f-4734-85f1-a1bc94bcc31a.png" width="400" height="400">
+
+    <br>
+        <em>Fig. 2: Examples of matched sequences</em>
+</p>
+
 ## References
 <a id="1">[1]</a> 
 T. Naseer, M. Ruhnke, C. Stachniss, L. Spinello and W. Burgard, "Robust
