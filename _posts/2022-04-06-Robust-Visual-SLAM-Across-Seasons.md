@@ -32,7 +32,7 @@ With $S_{i,j}$ between [0,1] where $S_{i,j}$ = 1 is full similarity.
 e^{i\pi} + 1 = 0
 ```
 
-$a^2 + b^2 = c^2$.
+$'a^2 + b^2 = c^2'$.
 
 
 ## References
