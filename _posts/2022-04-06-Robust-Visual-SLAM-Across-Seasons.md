@@ -4,18 +4,28 @@ This blogpost describes the implementation of reproducing the Deep Learning Pape
 We will first describe the purpose of the reproduced paper. After that we describe the implementation of the Robust image matching and the Sequence matching; this includes the difficulties found during reproduction such as missing hyperparameter values. Finally, we show our results and draw conclusions from them.
 
 ## 2. Motivation
-Place recognition is a core element in Simultaneous Localization and Mapping (SLAM). Drastic errors in trajectory estimation appear when there are incorrect loop closures. Detecting loop closures across seasons is a big challenge since often systems only perform well on minor perceptual changes in the environment. Therefore, the paper: “Robust Visual SLAM Across Seasons” [[1]](#1) had its main focus on computing consistent trajectories over longer periods of time and aimed at achieving robust place recognition across season.
+Place recognition is a core element in Simultaneous Localization and Mapping (SLAM). Drastic errors in trajectory estimation appear when there are incorrect loop closures. Detecting loop closures across seasons is a big challenge since often systems only perform well on minor perceptual changes in the environment. Therefore, the paper: “Robust Visual SLAM Across Seasons” [[1]](#1) had its main focus on computing consistent trajectories over longer periods of time and aimed at achieving robust place recognition across season./ 
+SLAM is also needed because just using the best score for every query image with respect to the database in the similarity matrix can lead to false matchings since the best similarity might not be the true positive, see fig. [1] for an example. With SLAM we also take the temporal dimension into account. 
+
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/95222839/162386555-332f7ad3-bb67-497c-8c3f-72da22a764e3.png" width="400" height="300">
+    <br>
+        <em>Fig. 1: The highest similarities scores as dots</em>
+</p>
+
+
 
 ## 3. Implementation
 ### 3.1 Robust image matching
 
 The goal for the image matching is to match two sequences of images. Whereas the first sequence of the dataset is refered to as 'database' which is a ordered set of images: <img src="https://render.githubusercontent.com/render/math?math=D = (d_1,... ,d_2)"> and the latter is refered to as the query dataset which is the set: <img src="https://render.githubusercontent.com/render/math?math=Q = (q_1,... ,q_2)">. The query set is recorded in a different season and is thereby different from the database image, for example there is snow on the roads or leafs have fallen of the tree. 
-For classification of images 'Deep Convolutional Neural Networks' (DCNN) have set the benchmark since AlexNet [[3]](#3). DCNNs can learns features from millions of training images. DCNNs consists of convolution layers in the early stages where it can present abstract feature presentations like edges or lines, see fig [1].
+For classification of images 'Deep Convolutional Neural Networks' (DCNN) have set the benchmark since AlexNet [[3]](#3). DCNNs can learns features from millions of training images. DCNNs consists of convolution layers in the early stages where it can present abstract feature presentations like edges or lines, see fig [2].
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/95222839/162166314-35dc55b2-e684-4980-8295-ad4903ac4a95.png" width="400" height="200">
     <br>
-        <em>Fig. 1: The abstract feature representations</em>
+        <em>Fig. 2: The abstract feature representations</em>
 </p>
 
 For this comparing task the AlexNet model is used which is pre-trained on the ImageNet dataset. The authors of paper [[2]](#2) have reported that the Conv3 layer of AlexNet behaves more robust to seasonal changes on their datasets so that is the layer that we also chose to use.
@@ -37,22 +47,22 @@ A final remark with respect to the shortcomings of our implementation is the fac
 To show the matching, a simple GUI was employed to show the matches in topological order. Such a match consists of the database image, query image and identifiers of both.
 
 ## 4. Results
-In figure 2 below, a few examples of matches in a certain sequence can be seen.
+In figure 3 below, a few examples of matches in a certain sequence can be seen.
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/95222839/162180656-91e67a1e-6202-47e3-809c-dfaacfb68795.png" width="300" height="300">
     &nbsp; &nbsp; &nbsp; &nbsp;
     <img src="https://user-images.githubusercontent.com/95222839/162181051-a0116b09-743f-4734-85f1-a1bc94bcc31a.png" width="300" height="300">
     <br>
-        <em>Fig. 2: Examples of matched sequences</em>
+        <em>Fig. 3: Examples of matched sequences</em>
 </p>
 
-There is no easy way of visually showing the entire matching. But to give an impression of the quality of a matching or the behaviour of the minimum cost flow network, the matching can be mapped onto the similarity matrix. In figure 3 and 4 some of these can be seen.
+There is no easy way of visually showing the entire matching. But to give an impression of the quality of a matching or the behaviour of the minimum cost flow network, the matching can be mapped onto the similarity matrix. In figure 4 and 5 some of these can be seen.
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/95222839/162182140-d786785d-5276-44da-a2d4-7e1639b6261b.png" width="600" height="300">
     <br>
-        <em>Fig. 3: Example of  the minimum cost flow </em>
+        <em>Fig. 4: Example of  the minimum cost flow </em>
 </p>
 
 In figure 3, the black opaque dots are the maximal similar-
@@ -69,7 +79,7 @@ similarities.
 <p align="center">
     <img src="https://user-images.githubusercontent.com/95222839/162182059-d48b0cc6-c2aa-4d49-a056-b2184748b666.png" width="300" height="300">
     <br>
-        <em>Fig. 4: Another example of the minimum cost flow </em>
+        <em>Fig. 5: Another example of the minimum cost flow </em>
 </p>
 
 Figure 4 shows the same for a different dataset, without maximal similarities and transposed. In this particular case, the first part of the first sequence is matched but the matching skips the remaining part and matches the rest of the second query sequence instead.
