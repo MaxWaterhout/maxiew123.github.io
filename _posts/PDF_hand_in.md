@@ -114,7 +114,7 @@ Processing Systems 25, 2012, pp. 1097 1105.
 Contributions:\
 Max : Preprocessing data with robust image matching\
 Ynze : Sequence matching\
-Andreas : Results \
+Andreas : Results, conclusion and discussion \
 Emma : Preprocessing data with Robust image matching
 
 
