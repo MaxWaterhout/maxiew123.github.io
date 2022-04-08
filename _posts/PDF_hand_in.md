@@ -1,4 +1,9 @@
-Authors: Max Waterhout - 5384907
+Authors: \
+Max Waterhout - 5384907 - m.waterhout@student.tudelft.nl\
+Ynze ter Horst - 4701682 - Y.Y.G.F.terHorst@student.tudelft.nl\
+Emma Allemekinders - 5608198 - E.A.Allemekinders@student.tudelft.nl\
+Andreas Zwanenburg - 5413494 - A.zwanenburg-1@student.tudelft.nl
+
 # Reproduced paper: Robust Visual SLAM Across Seasons
 ## 1. Introduction
 This blogpost describes the implementation of reproducing the Deep Learning Paper: “Robust Visual SLAM Across Seasons” [[1]](#1) .The implementation has been described in two steps: Robust image matching and Sequence matching. In the first step, a descriptor has been extracted per image for two sequences of images by making use of the well-known Deep Convolutional Neural Network (DCNN): AlexNet. Subsequently, the similarity matrix has been computed by comparing each image of the query sequence with the database.In the second step, based on this similarity matrix, a minimum cost flow network problem has been formulated. With this formulation matching hypotheses between sequences have been computed. This resulting hypothesis is the loop closure information which could be used to formulate a graph based SLAM problem and compute the joint maximum likelihood trajectory. However this paper only reproduces until the loop closure information and does not implement the maximum likelihood trajectory. \
@@ -105,4 +110,11 @@ arXiv:1501.04158, 2015. \
 A. Krizhevsky, I. Sutskever, and G. E. Hinton, Imagenet classication with
 deep convolutional neural networks, in Advances in Neural Information
 Processing Systems 25, 2012, pp. 1097 1105.
+
+Contributions:\
+Max : Preprocessing data with robust image matching\
+Ynze : Sequence matching\
+Andreas : Results \
+Emma : Preprocessing data with Robust image matching
+
 
