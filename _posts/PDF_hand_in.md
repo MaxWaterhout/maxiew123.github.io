@@ -6,12 +6,11 @@ Andreas Zwanenburg - 5413494 - A.zwanenburg-1@student.tudelft.nl
 
 # Reproduced paper: Robust Visual SLAM Across Seasons
 ## 1. Introduction
-This blogpost describes the implementation of reproducing the Deep Learning Paper: “Robust Visual SLAM Across Seasons” [[1]](#1) .The implementation has been described in two steps: Robust image matching and Sequence matching. In the first step, a descriptor has been extracted per image for two sequences of images by making use of the well-known Deep Convolutional Neural Network (DCNN): AlexNet. Subsequently, the similarity matrix has been computed by comparing each image of the query sequence with the database.In the second step, based on this similarity matrix, a minimum cost flow network problem has been formulated. With this formulation matching hypotheses between sequences have been computed. This resulting hypothesis is the loop closure information which could be used to formulate a graph based SLAM problem and compute the joint maximum likelihood trajectory. However this paper only reproduces until the loop closure information and does not implement the maximum likelihood trajectory. \
+This blogpost describes the implementation of reproducing the Deep Learning Paper: “Robust Visual SLAM Across Seasons” [[1]](#1) .The implementation has been described in two steps: Robust image matching and Sequence matching. In the first step, a descriptor has been extracted per image for two sequences of images by making use of the well-known Deep Convolutional Neural Network (DCNN): AlexNet. Subsequently, the similarity matrix has been computed by comparing each image of the query sequence with the database. In the second step, based on this similarity matrix, a minimum cost flow network problem has been formulated. With this formulation matching hypotheses between sequences have been computed. This resulting hypothesis is the loop closure information which could be used to formulate a graph based SLAM problem and compute the joint maximum likelihood trajectory. However this paper only reproduces until the loop closure information and does not implement the maximum likelihood trajectory. \
 We will first describe the purpose of the reproduced paper. After that we describe the implementation of the Robust image matching and the Sequence matching; this includes the difficulties found during reproduction such as missing hyperparameter values. Finally, we show our results and draw conclusions from them.
 
 ## 2. Motivation
-Place recognition is a core element in Simultaneous Localization and Mapping (SLAM). Drastic errors in trajectory estimation appear when there are incorrect loop closures. Detecting loop closures across seasons is a big challenge since often systems only perform well on minor perceptual changes in the environment. Therefore, the paper: “Robust Visual SLAM Across Seasons” [[1]](#1) had its main focus on computing consistent trajectories over longer periods of time and aimed at achieving robust place recognition across season./ 
-SLAM is also needed because just using the best score for every query image with respect to the database in the similarity matrix can lead to false matchings since the best similarity might not be the true positive, see fig. [1] for an example. With SLAM we also take the temporal dimension into account. 
+Place recognition is a core element in Simultaneous Localization and Mapping (SLAM). Drastic errors in trajectory estimation appear when there are incorrect loop closures. Detecting loop closures across seasons is a big challenge since often systems only perform well on minor perceptual changes in the environment. Therefore, the paper: “Robust Visual SLAM Across Seasons” [[1]](#1) had its main focus on computing consistent trajectories over longer periods of time and aimed at achieving robust place recognition across season. SLAM is also needed because just using the best score for every query image with respect to the database in the similarity matrix can lead to false matchings since the best similarity might not be the true positive, see fig. [1] for an example. With SLAM we also take the temporal dimension into account. 
 
 
 <p align="center">
@@ -37,7 +36,7 @@ For classification of images 'Deep Convolutional Neural Networks' (DCNN) have se
 For this comparing task the AlexNet model is used which is pre-trained on the ImageNet dataset. The authors of paper [[2]](#2) have reported that the Conv3 layer of AlexNet behaves more robust to seasonal changes on their datasets so that is the layer that we also chose to use.
 
 For the image input we resize the images to 231x231 pixels to fit the input for the AlexnNet. Here we diverge from the original paper where they resize to 256x256 pixels and we follow [[2]](#2). This is because after going through the convolution layers we want an image descriptor with a dimension of 384x13x13, ultimately resized in a feature vector of size 64896.
-The comparison between the quary and database are done with the cosine similarity. The cosine similarity calculates how much the two images look like each other, with image descriptors respectively <img src="https://render.githubusercontent.com/render/math?math=I_{Q_i}"> and <img src="https://render.githubusercontent.com/render/math?math=I_{D_j}">. The full cosine similarity matrix is calculated with equation [1]. In this matrix image descriptors are compared to each other. 
+The comparison between the query and database are done with the cosine similarity. The cosine similarity calculates how much the two images look like each other, with image descriptors respectively <img src="https://render.githubusercontent.com/render/math?math=I_{Q_i}"> and <img src="https://render.githubusercontent.com/render/math?math=I_{D_j}">. The full cosine similarity matrix is calculated with equation [1]. In this matrix image descriptors are compared to each other. 
 <p align="center">
     <img src="https://render.githubusercontent.com/render/math?math=S_{i,j} = (I_{Q_i} \cdot I_{D_j}) \quad (1)  "> 
 </p>
@@ -48,7 +47,7 @@ With <img src="https://render.githubusercontent.com/render/math?math=S_{i,j}"> b
 For sequence matching, we implemented a minimum cost flow network, which has a structure representing the problem of matching images while taking into account the temporal nature of these images. Specifically, a single flow needs to be found from a source node to a sink node through a network of nodes that indicate either a match between a certain database-query image pair or a non-match between them. The nodes are connected with edges of a certain weight, dependent on a range of hyperparameters and the similarity matrix presented in the previous section. The higher the similarity between a database-query pair, the lower the cost of reaching the node representing a match. The accumulative cost of the weights of edges in a flow should be minimized, creating a sequence matching.
 
 Setting the hyperparameters for this problem is quite cumbersome and the reproduced paper does not specify any details as to its settings. Therefore we had to do some heuristic search to find suitable ones. Unfortunately these settings also seemed to be very dependent on the problem and a small tweak could make the difference between convergence and divergence. \
-A final remark with respect to the shortcomings of our implementation is the fact that the paper references a previous implementation for the minimum cost flow network but extends this implementation with an additional component which is not described in detail. Therefore, we needed to make some design choices with respect to set of edges aimed at reducing ambiguity in database images, referenced by epsilon h in the paper.\\
+A final remark with respect to the shortcomings of our implementation is the fact that the paper references a previous implementation for the minimum cost flow network but extends this implementation with an additional component which is not described in detail. Therefore, we needed to make some design choices with respect to set of edges aimed at reducing ambiguity in database images, referenced by epsilon h in the paper.
 
 To show the matching, a simple GUI was employed to show the matches in topological order. Such a match consists of the database image, query image and identifiers of both.
 
@@ -71,16 +70,7 @@ There is no easy way of visually showing the entire matching. But to give an imp
         <em>Fig. 4: Example of  the minimum cost flow </em>
 </p>
 
-In figure 3, the black opaque dots are the maximal similar-
-ity across the query dimension. It is clear from the hues of the
-background (representing the similarity) and these black dots
-that the query sequence is a concatenation of two sequences
-corresponding to the single database sequence. In this case
-they are recorded in winter and autumn, while the database
-sequence is recorded in summer. The red dots are the matches
-found by the network, it matches the first sequence rather than
-the second, which is to be expected judging from the maximal
-similarities.
+In figure 4, the black opaque dots are the maximal similarity across the query dimension. It is clear from the hues of the background (representing the similarity) and these black dots that the query sequence is a concatenation of two sequences corresponding to the single database sequence. In this case they are recorded in winter and autumn, while the database sequence is recorded in summer. The red dots are the matches found by the network, it matches the first sequence rather than the second, which is to be expected judging from the maximal similarities.
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/95222839/162182059-d48b0cc6-c2aa-4d49-a056-b2184748b666.png" width="300" height="300">
@@ -88,7 +78,7 @@ similarities.
         <em>Fig. 5: Another example of the minimum cost flow </em>
 </p>
 
-Figure 4 shows the same for a different dataset, without maximal similarities and transposed. In this particular case, the first part of the first sequence is matched but the matching skips the remaining part and matches the rest of the second query sequence instead.
+Figure 5 shows the same for a different dataset, without maximal similarities and transposed. In this particular case, the first part of the first sequence is matched but the matching skips the remaining part and matches the rest of the second query sequence instead.
 
 ## 5. Conclusion and Discussion
 In this project, the reproduction of "Robust image matching" and "Sequence matching" from the paper “Robust Visual SLAM Across Seasons” [[1]](#1) has been done.
