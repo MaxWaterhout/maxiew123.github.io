@@ -11,9 +11,9 @@ by Deep Learning course 2021/2022 at TU Delft. This whole reproduction is done f
 In the computer vision domain, deep neural networks have been successful on a big range of tasks where labels can easily be specified by humans, like object detection and segmentation. A bigger challenge lies in applications that are difficult to label, like in the robotics domain. An example would be labeling a pouring task. How can a robot understand what important properties are while neglecting setting changes? Ideally, a robot in the real world can learn a pouring task purely from observation and understanding how to imitate this behavior directly. In this reproduction, we train a network on a pouring task that tries to learn the important features like the pose and the amount of liquid in the cup while being viewpoint and setting invariant. This pouring task is learned through the use of supervised learning and representation learning. In the following, we will provide a motivation for this paper, our implementation of the model, the results that we achieved against the benchmarks and lastly we discuss the limitations of our implementation. 
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/95222839/171206978-348aa639-7d85-4911-a20c-c2981dd7a2b9.gif" width="300" height="500"/> 
-</br>
-<em>fig 1. An example sequence of a pouring task</em>
+  <img src="https://user-images.githubusercontent.com/95222839/171206978-348aa639-7d85-4911-a20c-c2981dd7a2b9.gif" width="300" height="500"/> 
+  <br>
+    <em>fig 1. An example sequence of a pouring task</em>
 </p>
 
 ## 2. Motivation
@@ -25,7 +25,7 @@ For our implementation of the TCN we only use the data of the single-view data. 
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171224461-0ac7e6c2-46cc-40f1-8156-8109a7df10ad.png" width="360" height="261" alt="single view TCN"> 
-</br>
+<br>
 <em>Fig. 1: The single-view TCN</em>
 </p>
 
@@ -34,12 +34,12 @@ The loss is calculated with a triplet loss [[3]](#3). The formula and an illustr
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171224677-7de1c4ed-2f58-4d4e-9db8-c2388a18a855.png" width="700" height="105" > 
-</br>
+<br>
 </p>
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171224869-613abcca-6381-4150-b8f6-371b7b32c89e.png" width="600" height="161" alt="Training loss">
-</br>
+<br>
 <em>Fig. 2: The triplet loss</em>
 </p>
 
@@ -57,13 +57,13 @@ Model is trained on the Google Cloud with one P100 GPU. SGD, SGD with momentum, 
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171225019-834200ab-a7d2-4c42-8f0a-dbb9675b70e3.png" width="360" height="261" alt="Training loss"> 
-</br>
+<br>
 <em>Fig. 3: The training loss</em>
 </p>
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171225144-ec37da4d-98ea-4377-b55c-fe100254479a.png" width="360" height="261" alt="Figure 1 paper"> 
-</br>
+<br>
 <em>Fig. 4: The testing accuracy</em>
 </p>
 The alignment accuracy from each saved network model for the testing set is ploted in figure 2. Various criterion were used to measure the similarity between two embedded frames, such as consine similarity and euclidean distance (l2). We paid more focus on the l2 distance with one frame tolerence because this setup is closely related to the training procedure.  
@@ -71,7 +71,7 @@ The best accuracy measured by that criteria is from the model at the 7200th iter
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171226259-2c59dcdf-7457-47df-8ee2-2c8dc3c02acc.gif" width="600" height="600"> 
-</br>
+<br>
 <em>Fig. 5: Overview</em>
 </p>
 
