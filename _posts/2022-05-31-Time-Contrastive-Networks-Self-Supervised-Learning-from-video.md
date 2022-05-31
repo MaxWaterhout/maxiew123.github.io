@@ -1,5 +1,6 @@
 # Reproducing *Time-Contrastive Networks: Self-Supervised Learning from Video*
-**Authors:** Max Waterhout (5384907), Amos Yususf (4361504), Tingyu Zhang () 
+**Authors:** Max Waterhout (5384907) & Amos Yususf (4361504) & Tingyu Zhang () 
+***
 
 In this blog post, we present the results of our attempted replication and study of the 2018 paper by Pierre Sermanet et al. 
 *Time-Contrastive Networks: Self-Supervised Learning from Video* [[1]](#1). This work is part of the CS4245 Seminar Computer Vision
@@ -22,21 +23,19 @@ Imitation learning has already been used for learning robotic skills from demons
 ## 3. Implementation
 For our implementation of the TCN we only use the data of the single-view data. The input of the TCN is a sequence of preprocessed 360x640 frames. In total 11 sequences of around 5 seconds (40 frames) are used for training. The framework contains a deep network that outputs a 32-dimensional embedding vector, see fig [1].  
 
-<p align="center">
-<img src="images/single view TCN.png" width="360" height="261" alt="single view TCN"> </br>
+<img src="https://user-images.githubusercontent.com/95222839/171224461-0ac7e6c2-46cc-40f1-8156-8109a7df10ad.png" width="360" height="261" alt="single view TCN"> </br>
 <em>Fig. 1: The single-view TCN</em>
 </p>
 
 ### 3.1 Training
 The loss is calculated with a triplet loss [[3]](#3). The formula and an illustration can be seen in fig [2]. This loss is calculated with an anchor, positive and negative frame. For every frame in a sequence, The TCN encourages the anchor and positive to be close in embedding space while distancing itself from the negative frame. This way the network learns what is common between the anchor and positive frame and different from the negative frame. In our case the negative margin range is 0.2 seconds (one frame) and negatives always come from the same sequence as the positive. \
 
-
 <p align="center">
-<img src="images/triplet loss formula.png" width="700" height="105" > </br>
+<img src="https://user-images.githubusercontent.com/95222839/171224677-7de1c4ed-2f58-4d4e-9db8-c2388a18a855.png" width="700" height="105" > </br>
 </p>
 
 <p align="center">
-<img src="images/triplet_loss.png" width="600" height="161" alt="Training loss"> </br>
+<img src="https://user-images.githubusercontent.com/95222839/171224869-613abcca-6381-4150-b8f6-371b7b32c89e.png" width="600" height="161" alt="Training loss"> </br>
 <em>Fig. 2: The triplet loss</em>
 </p>
 
@@ -51,40 +50,25 @@ We compare our results against the pre-trained Inception-ImageNet model [[4]](#4
 
 ### 3.1 Final result overview
 Model is trained on the Google Cloud with one P100 GPU. SGD, SGD with momentum, and Adam were used during different training epochs. Between 1 to 800 epochs, the optimizer was the SGD and between 800 to 4200 epochs, we switched the optimizer to SGD with momentum because the improvement on the loss was slow. After 4200 epochs, we used Adam as the optimizer for the same reason. During the training, single view dataset was used and there were total of 17 videos (fake pouring videos were not used). Each video lasts 7 seconds and contains scenes of pouring taking from the front view. 11 videos were used as training dataset and the rest were for testing. Because there was no validation set to select the best training model, we only saved models for every 200 epochs and for models that had the new minimum losses. In the end, we trained the model for 13k iterations and the training loss is shown in Figure 1. The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
+![tain loss]()
 
 <p align="center">
-<img src="images/tain loss.png" width="360" height="261" alt="Training loss"> </br>
+<img src="https://user-images.githubusercontent.com/95222839/171225019-834200ab-a7d2-4c42-8f0a-dbb9675b70e3.png" width="360" height="261" alt="Training loss"> </br>
 <em>Fig. 3: The training loss</em>
 </p>
-
-
+![accuracy]()
 
 <p align="center">
-<img src="./images/accuracy.png" width="360" height="261" alt="Figure 1 paper"> </br>
+<img src="https://user-images.githubusercontent.com/95222839/171225144-ec37da4d-98ea-4377-b55c-fe100254479a.png" width="360" height="261" alt="Figure 1 paper"> </br>
 <em>Fig. 4: The testing accuracy</em>
 </p>
 The alignment accuracy from each saved network model for the testing set is ploted in figure 2. Various criterion were used to measure the similarity between two embedded frames, such as consine similarity and euclidean distance (l2). We paid more focus on the l2 distance with one frame tolerence because this setup is closely related to the training procedure.  
 The best accuracy measured by that criteria is from the model at the 7200th iteration. The average alignment accuracy is 80.11 percent whereas the Baseline method has an average accuracy of 71.04 percent. 
 
 <p align="center">
-<img src="./images/everything.gif" width="360" height="261"> </br>
+<img src="https://user-images.githubusercontent.com/95222839/171226259-2c59dcdf-7457-47df-8ee2-2c8dc3c02acc.gif" width="600" height="600"> </br>
 <em>Fig. 5: Overview</em>
 </p>
-
-
-
-https://user-images.githubusercontent.com/99979529/171060214-c9998001-4c61-43a1-82c8-dca6ab182bcd.mp4
-
-
-
-
-
-
-
-
-
-
-
 
 
 ### 3.2 Reproduced figure/ table
