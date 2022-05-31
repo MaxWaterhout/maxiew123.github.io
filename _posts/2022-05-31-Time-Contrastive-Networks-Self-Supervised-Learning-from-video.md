@@ -21,8 +21,9 @@ Imitation learning has already been used for learning robotic skills from demons
 
 
 ## 3. Implementation
-For our implementation of the TCN we only use the data of the single-view data. The input of the TCN is a sequence of preprocessed 360x640 frames. In total 11 sequences of around 5 seconds (40 frames) are used for training. The framework contains a deep network that outputs a 32-dimensional embedding vector, see fig [1].  
+For our implementation of the TCN we only use the data of the single-view data. The input of the TCN is a sequence of preprocessed 360x640 frames. In total 11 sequences of around 5 seconds (40 frames) are used for training. The framework contains a deep network that outputs a 32-dimensional embedding vector, see fig [1]. 
 
+<p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171224461-0ac7e6c2-46cc-40f1-8156-8109a7df10ad.png" width="360" height="261" alt="single view TCN"> 
 </br>
 <em>Fig. 1: The single-view TCN</em>
