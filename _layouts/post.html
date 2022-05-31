@@ -12,7 +12,7 @@ layout: default
         {{ page.date | date: date_format }}
       </time>
       {% assign author = page.author | default: site.author_44 %}
-      {%- if author -%}
+      {%- if author_4 -%}
         • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ author }}</span></span>
       {%- endif -%}</p>
   </header>
