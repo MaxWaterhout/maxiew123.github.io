@@ -46,13 +46,21 @@ The loss is calculated with a triplet loss [[3]](#3). The formula and an illustr
 The main purpose of the triplet loss is to learn representations without labels and simultaneously learn meaningful features like pose while being invariant to viewpoint,scale occlusion, background etc.. \ 
 
 ## 3.2 Deep network
-The deep network is used for feature extraction. This framework is derived from an Inception architecture initialized with ImageNet pre-trained weights. The architecture is up until the "Mixed-5D" layer followed by two 2 convolutional layers, a spatial softmax layer and a fully connected layer. 
+The deep network is used for feature extraction. This framework is derived from an Inception architecture initialized with ImageNet pre-trained weights. The architecture is up until the "Mixed-5D" layer followed by two 2 convolutional layers, a spatial softmax layer and a fully connected layer. Note that the spatial softmax layer outputs the x and y coordinates of the maximum activation from each channel. Since our reference paper did not give the convolution kernel size, we followed paper [[5]](#5), and used 5x5 Conv + ReLu.
 
-## 3. Results
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/95222839/172599588-93a32770-d087-4432-bd42-a5a436606729.png" width="600" height="161" alt="Spatial softmax ">
+<br>
+<em>Fig. 3: The Spatial Softmax</em>
+</p>
+
+
+## 4. Results
 For the results we used accuracy measured by video allignment. The allignment captures how well a model can allign a video. The allignment metrics that are used are the L2 norm and the cosine simularity. The metric matches the nearest neighbors, in embedding space, with eachother. In this way, for each frame the most semantically similar frame is returned. We state that a true positive is when a frame lies in the positive range from eachother. This way frame sequence: [1,2] gives the same accuracy as [2,1]. /
 We compare our results against the pre-trained Inception-ImageNet model [[4]](#4). We use the 2048D output vector of the last layer before the classifier as a baseline. 
 
-### 3.1 Final result overview
+### 4.1 Final result overview
 Model is trained on the Google Cloud with one P100 GPU. SGD, SGD with momentum, and Adam were used during different training epochs. Between 1 to 800 epochs, the optimizer was the SGD and between 800 to 4200 epochs, we switched the optimizer to SGD with momentum because the improvement on the loss was slow. After 4200 epochs, we used Adam as the optimizer for the same reason. During the training, single view dataset was used and there were total of 17 videos (fake pouring videos were not used). Each video lasts 7 seconds and contains scenes of pouring taking from the front view. 11 videos were used as training dataset and the rest were for testing. Because there was no validation set to select the best training model, we only saved models for every 200 epochs and for models that had the new minimum losses. In the end, we trained the model for 13k iterations and the training loss is shown in Figure 1. The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
 
 <p align="center">
@@ -76,24 +84,35 @@ The best accuracy measured by that criteria is from the model at the 7200th iter
 </p>
 
 
-### 3.2 Reproduced figure/ table
+### 4.2 Reproduced figure/ table
+| Method  | Alignment Accuracy (kNN)  | Alignment Accuracy (l2, tor = 1) | Training iteration |
+| :------------                  |:---------------:|:---------------:| -----:|
+| Baseline                       | 70.2%*           | 71.0%           | -     |
+| Random                         |      71.9% *     | -               |      -|
+| Single-view TCN (max acc)      | -               |    80.1%        | 7.2k  |
+| Single-view TCN (min loss )    | -               |    75.0%        | 11781  |
+| Single-view TCN (max itr)      | -               |    76.1%        | 13k   |
+| Single-view TCN (literature) [1]| 74.2% *         |    -            |266k   |
 
-
-## 4. Discussion and Limitations
+## 5. Discussion and Limitations
 test
 
-### 4.1 Discussion
-### 4.2 Limitations
+### 5.1 Discussion
+### 5.2 Limitations
 
 ## References
 <a id="1">[1]</a> Sermanet, P., Corey, L., Chebotar Y., Hsu J., Jang E., Schaal S., Levine S., Google Brain (2018). Time-Contrastive Networks: Self-Supervised Learning from Video. <i>University of South California</i>. [https://arxiv.org/abs/1704.06888]() \
 <a id="2">[2] </a> J.A. Ijspeert, J. Nakanishi, and S. Schaal. Movement imitation
 with nonlinear dynamical systems in humanoid robots. In
-ICRA, 2002.
+ICRA, 2002. \
 <a id="3">[3] </a> X. Wang and A. Gupta. Unsupervised learning of visual
-representations using videos. CoRR, abs/1505.00687, 2015.
+representations using videos. CoRR, abs/1505.00687, 2015. \
 <a id="4">[4] </a> J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-Fei. ImageNet: A Large-Scale Hierarchical Image Database. In
-CVPR, 2009.
+CVPR, 2009. \
+<a id="5">[5] </a> C. Finn, X. Y. Tan, Y. Duan, T. Darrell, S. Levine, and
+P. Abbeel. Learning visual feature spaces for robotic
+manipulation with deep spatial autoencoders. CoRR,
+abs/1509.06113, 2015.
 
 
 
