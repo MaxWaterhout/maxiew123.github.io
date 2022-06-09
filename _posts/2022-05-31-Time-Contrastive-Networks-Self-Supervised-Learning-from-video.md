@@ -30,7 +30,7 @@ For our implementation of the TCN we only use the data of the single-view data. 
 </p>
 
 ### 3.1 Training
-The loss is calculated with a triplet loss [[3]](#3). The formula and an illustration can be seen in fig [3]. This loss is calculated with an anchor, positive and negative frame. For every frame in a sequence, The TCN encourages the anchor and positive to be close in embedding space while distancing itself from the negative frame. This way the network learns what is common between the anchor and positive frame and different from the negative frame. In our case the negative margin range is 0.2 seconds (one frame) and negatives always come from the same sequence as the positive. \
+The loss is calculated with a triplet loss [[3]](#3). The formula and an illustration can be seen in fig [3]. This loss is calculated with an anchor, positive and negative frame. For every frame in a sequence, The TCN encourages the anchor and positive to be close in embedding space while distancing itself from the negative frame. This way the network learns what is common between the anchor and positive frame and different from the negative frame. In our case the negative margin range is 0.2 seconds (one frame) and negatives always come from the same sequence as the positive. 
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171224677-7de1c4ed-2f58-4d4e-9db8-c2388a18a855.png" width="700" height="105" > 
@@ -60,30 +60,27 @@ For the results we used accuracy measured by video allignment. The allignment ca
 We compare our results against the pre-trained Inception-ImageNet model [[4]](#4). We use the 2048D output vector of the last layer before the classifier as a baseline. The same baseline is used in our reference paper.
 
 ### 4.1 Final result overview
-The model is trained on the Google Cloud with one P100 GPU. SGD, SGD with momentum, and Adam were used during different training epochs. Between 1 to 800 epochs, the optimizer was the SGD and between 800 to 4200 epochs, we switched the optimizer to SGD with momentum because the improvement on the loss was slow. After 4200 epochs, we used Adam as the optimizer for the same reason. During the training, single view dataset was used and there were total of 17 videos. Each video lasts 7 seconds and contains scenes of pouring taking from the front view. 11 videos were used as training dataset and the rest were for testing. Because there was no validation set to select the best training model, we only saved models for every 200 epochs and for models that had the new minimum losses. In the end, we trained the model for 13k iterations and the training loss is shown in Fig [5]. The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
+The model is trained on the Google Cloud with one P100 GPU. SGD, SGD with momentum, and Adam were used during different training iterations. Between 1 to 800 iterations, the optimizer was the SGD and between 800 to 4200 iterations, we switched the optimizer to SGD with momentum because the improvement on the loss was slow. After 4200 iterations, we used Adam as the optimizer for the same reason. During the training, single view dataset was used and there were total of 17 videos. Each video lasts 7 seconds and contains scenes of pouring taking from the front view. 11 videos were used as training dataset and the rest were for testing. Because there was no validation set to select the best training model, we only saved models for every 200 iterations and for models that had the new minimum losses. In the end, we trained the model for 13k iterations and the training loss is shown in Fig [5]. The zigzaging behaviour is due to the 200 iterations gap as well as the missing data betweening 2000 to 6000 iterations after one virtual machine crash.   
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/95222839/171225019-834200ab-a7d2-4c42-8f0a-dbb9675b70e3.png" width="500" height="350" alt="Training loss"> 
+<img src="https://user-images.githubusercontent.com/95222839/171225019-834200ab-a7d2-4c42-8f0a-dbb9675b70e3.png" width="400" height="300" alt="Training loss"> 
+ &nbsp; &nbsp; &nbsp; &nbsp;
+<img src="https://user-images.githubusercontent.com/95222839/171225144-ec37da4d-98ea-4377-b55c-fe100254479a.png" width="400" height="300" alt="Figure 1 paper"> 
 <br>
-<em>Fig. 5: The training loss</em>
+<em>Fig. 5: The training loss and testing accuracy</em>
 </p>
 
-<p align="center">
-<img src="https://user-images.githubusercontent.com/95222839/171225144-ec37da4d-98ea-4377-b55c-fe100254479a.png" width="500" height="350" alt="Figure 1 paper"> 
-<br>
-<em>Fig. 6: The testing accuracy</em>
-</p>
 The alignment accuracy from each saved network model for the testing set is plotted in Fig [6]. Various criterion were used to measure the similarity between two embedded frames, such as cosine similarity and euclidean distance (l2). We paid more focus on the l2 distance with one frame tolerence because this setup is closely related to the training procedure.  
 The best accuracy measured with this criteria is from the model at the 7200th iteration. The average alignment accuracy is 80.11 percent whereas the Baseline method has an average accuracy of 71.04 percent. 
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/95222839/171226259-2c59dcdf-7457-47df-8ee2-2c8dc3c02acc.gif" width="600" height="600"> 
+<img src="https://user-images.githubusercontent.com/95222839/171226259-2c59dcdf-7457-47df-8ee2-2c8dc3c02acc.gif" width="700" height="700"> 
 <br>
-<em>Fig. 7: Overview</em>
+<em>Fig. 7: Video results. From left to right column: Ground truth, Baseline, TCN after 4 iterations, TCN after 7200 iterations </em>
 </p>
 
 
-### 4.2 Reproduced figure/ table
+### 4.2 Result overview
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/172601021-fb6ea1e1-32c8-4a22-b76e-d8eaca0f5545.png" width="900" height="300" alt="Results"> 
 <br>
@@ -94,9 +91,14 @@ In the table above, data with * are from the reference paper[[1]](#1) and the k-
 
 ## 5. Discussion and Limitations
 test
-
 ### 5.1 Discussion
+1. Overal performance on our results
+2. reEmphasis on what we did: evaluation scheme l2. 
+3. future: add multiview dataset. Evaluate network on imitation tasks 
 ### 5.2 Limitations
+1. preprocessing unknow. (normalization and reshape size). sol: Inception net for normalization. readme for reshape
+2. computing power limits and cost (google cloud)
+3. code from author was expired
 
 ## References
 <a id="1">[1]</a> Sermanet, P., Corey, L., Chebotar Y., Hsu J., Jang E., Schaal S., Levine S., Google Brain (2018). Time-Contrastive Networks: Self-Supervised Learning from Video. <i>University of South California</i>. [https://arxiv.org/abs/1704.06888]() \
