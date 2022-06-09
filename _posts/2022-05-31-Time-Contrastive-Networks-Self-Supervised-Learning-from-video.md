@@ -13,7 +13,7 @@ In the computer vision domain, deep neural networks have been successful on a bi
 <p align="center">
   <img src="https://user-images.githubusercontent.com/95222839/171206978-348aa639-7d85-4911-a20c-c2981dd7a2b9.gif" width="300" height="500"/> 
   <br>
-    <em>Fig 1. An example sequence of a pouring task</em>
+    <em>Fig 1. An example sequence of a pouring task from the single-view dataset</em>
 </p>
 
 ## 2. Motivation
@@ -26,7 +26,7 @@ For our implementation of the TCN we only use the data from the single-view data
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171224461-0ac7e6c2-46cc-40f1-8156-8109a7df10ad.png" width="500" height="350" alt="single view TCN"> 
 <br>
-<em>Fig. 2: The single-view TCN</em>
+<em>Fig. 2: The single-view TCN as described in [[1]](#1) </em>
 </p>
 
 ### 3.1 Training
@@ -40,7 +40,7 @@ The loss is calculated with a triplet loss [[3]](#3). The formula and an illustr
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171224869-613abcca-6381-4150-b8f6-371b7b32c89e.png" width="600" height="161" alt="Training loss">
 <br>
-<em>Fig. 3: The triplet loss</em>
+<em>Fig. 3: The triplet loss [[6]](#6)</em>
 </p>
 
 The main purpose of the triplet loss in this task is to learn representations without labels and simultaneously learn meaningful features like pose while being invariant to viewpoint,scale occlusion, background etc.. 
@@ -115,6 +115,7 @@ CVPR, 2009. \
 P. Abbeel. Learning visual feature spaces for robotic
 manipulation with deep spatial autoencoders. CoRR,
 abs/1509.06113, 2015.
+<a id="6">[6] </a> Schroff, F., Kalenichenko, D., & Philbin, J. (2015, March). FaceNet: A Unified Embedding for Face Recognition and Clustering. Google Inc. https://doi.org/10.48550/arXiv.1503.03832
 
 
 
