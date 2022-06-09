@@ -1,5 +1,5 @@
 # Reproduced paper: *Time-Contrastive Networks: Self-Supervised Learning from Video*
-**Authors:** Max Waterhout (5384907) & Amos Yususf (4361504) & Tingyu Zhang () 
+**Authors:** Max Waterhout (5384907) & Amos Yususf (4361504) & Tingyu Zhang (5478413) 
 
 In this blog post, we present the results of our attempted replication and study of the 2018 paper by Pierre Sermanet et al. 
 *Time-Contrastive Networks: Self-Supervised Learning from Video* [[1]](#1). This work is part of the CS4245 Seminar Computer Vision
@@ -24,7 +24,7 @@ Imitation learning has already been used for learning robotic skills from demons
 For our implementation of the TCN we only use the data of the single-view data. The input of the TCN is a sequence of preprocessed 360x640 frames. In total 11 sequences of around 5 seconds (40 frames) are used for training. The framework contains a deep network that outputs a 32-dimensional embedding vector, see fig [2]. 
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/95222839/171224461-0ac7e6c2-46cc-40f1-8156-8109a7df10ad.png" width="360" height="261" alt="single view TCN"> 
+<img src="https://user-images.githubusercontent.com/95222839/171224461-0ac7e6c2-46cc-40f1-8156-8109a7df10ad.png" width="500" height="350" alt="single view TCN"> 
 <br>
 <em>Fig. 2: The single-view TCN</em>
 </p>
@@ -56,20 +56,20 @@ The deep network is used for feature extraction. This framework is derived from 
 
 
 ## 4. Results
-For the results we used accuracy measured by video allignment. The allignment captures how well a model can allign a video. The allignment metrics that are used are the L2 norm and the cosine simularity. The metric matches the nearest neighbors, in embedding space, with eachother. In this way, for each frame the most semantically similar frame is returned. We state that a true positive is when a frame lies in the positive range from eachother. This way frame sequence: [1,2] gives the same accuracy as [2,1]. /
+For the results we used accuracy measured by video allignment. The allignment captures how well a model can allign a video. The allignment metrics that are used are the L2 norm and the cosine simularity. The metric matches the nearest neighbors, in embedding space, with eachother. In this way, for each frame the most semantically similar frame is returned. We state that a true positive is when a frame lies in the positive range from eachother. This way frame sequence: [1,2] gives the same accuracy as [2,1]. 
 We compare our results against the pre-trained Inception-ImageNet model [[4]](#4). We use the 2048D output vector of the last layer before the classifier as a baseline. The same baseline is used in our reference paper.
 
 ### 4.1 Final result overview
 The model is trained on the Google Cloud with one P100 GPU. SGD, SGD with momentum, and Adam were used during different training epochs. Between 1 to 800 epochs, the optimizer was the SGD and between 800 to 4200 epochs, we switched the optimizer to SGD with momentum because the improvement on the loss was slow. After 4200 epochs, we used Adam as the optimizer for the same reason. During the training, single view dataset was used and there were total of 17 videos. Each video lasts 7 seconds and contains scenes of pouring taking from the front view. 11 videos were used as training dataset and the rest were for testing. Because there was no validation set to select the best training model, we only saved models for every 200 epochs and for models that had the new minimum losses. In the end, we trained the model for 13k iterations and the training loss is shown in Fig [5]. The zigzaging behaviour is due to the 200 epoch gap as well as the missing data betweening 2000 to 6000 epochs after one virtual machine crash.   
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/95222839/171225019-834200ab-a7d2-4c42-8f0a-dbb9675b70e3.png" width="360" height="261" alt="Training loss"> 
+<img src="https://user-images.githubusercontent.com/95222839/171225019-834200ab-a7d2-4c42-8f0a-dbb9675b70e3.png" width="500" height="350" alt="Training loss"> 
 <br>
 <em>Fig. 5: The training loss</em>
 </p>
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/95222839/171225144-ec37da4d-98ea-4377-b55c-fe100254479a.png" width="360" height="261" alt="Figure 1 paper"> 
+<img src="https://user-images.githubusercontent.com/95222839/171225144-ec37da4d-98ea-4377-b55c-fe100254479a.png" width="500" height="350" alt="Figure 1 paper"> 
 <br>
 <em>Fig. 6: The testing accuracy</em>
 </p>
