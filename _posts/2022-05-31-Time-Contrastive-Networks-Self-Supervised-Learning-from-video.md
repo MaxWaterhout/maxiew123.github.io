@@ -26,7 +26,7 @@ For our implementation of the TCN we only use the data from the single-view data
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171224461-0ac7e6c2-46cc-40f1-8156-8109a7df10ad.png" width="500" height="350" alt="single view TCN"> 
 <br>
-<em>Fig. 2: The single-view TCN as described in [[1]](#1) </em>
+<em>Fig. 2: The single-view TCN as described in [1] </em>
 </p>
 
 ### 3.1 Training
@@ -40,7 +40,7 @@ The loss is calculated with a triplet loss [[3]](#3). The formula and an illustr
 <p align="center">
 <img src="https://user-images.githubusercontent.com/95222839/171224869-613abcca-6381-4150-b8f6-371b7b32c89e.png" width="600" height="161" alt="Training loss">
 <br>
-<em>Fig. 3: The triplet loss [[6]](#6)</em>
+<em>Fig. 3: The triplet loss [6]</em>
 </p>
 
 The main purpose of the triplet loss in this task is to learn representations without labels and simultaneously learn meaningful features like pose while being invariant to viewpoint,scale occlusion, background etc.. 
