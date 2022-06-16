@@ -92,7 +92,6 @@ In fig [6] we visualize our results from various methods used.
 In the table above, data with * are from the reference paper[[1]](#1) and the k-neareast neighbour scheme was used for accuracy measurement. However alignment accuracy was measured from l2 distance since we did not train any classifier for the k-nearest neighbour test. The two accuracy measurements give the similar score for Baseline model, 70.2% and 71%. Although our training iteration was limited by the hardware, the increment on the accuracy matches with historical data which means that the model did learn the water pouring representation from the triplet loss. We contribute our higher accuracy results to the small sample size because the reference model was trained on multi-view data set where as we only trained the model for single view dataset. 
 
 ## 5. Discussion and Limitations
-test
 ### 5.1 Discussion
 We have successfullly been able to reproduce the TCN model on the single-view dataset. The performance of our model is consistent with the results found in the original paper. We used our own evaluation scheme, namely L2, because we believe the evaluation should be similar to triplet loss and we did not train on the multi-view dataset. In future extensions of this reproduction we would advise to train the model on this multi-view dataset as well as reproduce the downstream tasks. 
 ### 5.2 Limitations
